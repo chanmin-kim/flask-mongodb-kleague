@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>S.G.S.K.</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+
+<style>
+    * {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .match-wrapper {
+        border-radius: .75rem;
+        min-height: 3rem;
+        background: #f3f3f3;
+    }
+</style>
+
+<body>
+
+{% if user_info.grade == 99 %}
+
+    <nav>
+        <div class="d-flex justify-content-between align-items-center bg-dark px-3" style="height: 3rem;">
+            <button class="btn btn-dark p-0" style="border: none!important;" type="button" onclick="location.href='/';"
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="S.G.S.K.( Soccer God Soccer King의 약자) - 대충 축신축왕이라는 뜻">
+                ⚽ S.G.S.K
+            </button>
+            <div>
+                {# {% if status %}#}
+                <button type="button" class="btn btn-outline-dark text-white" onclick="logout()">
+                    <i class="fa fa-unlock"></i>
+                </button>
+                {# {% endif %}#}
+            </div>
+        </div>
+    </nav>
+
+    <div style="background: #f3f3f3; height: calc(100vh - 3rem)">
+
+        <div class="col-lg-7 mx-auto bg-white px-3" style="height: calc(100vh - 3rem);">
+            <br>
+            <div class="w-100 d-flex">
+                <button type="button" class="w-50 btn btn-outline-primary" onclick="location.href='/admin/schedule'">
+                    일정 관리
+                </button>
+                <button type="button" class="w-50 btn btn-outline-primary" onclick="location.href='/admin/contents'">게시글
+                    관리
+                </button>
+                <button type="button" class="w-50 btn btn-primary" onclick="location.href='/admin/user'">회원 관리
+                </button>
+            </div>
+
+            <br>
+            <h5 class="text-center my-2">회원 관리</h5>
+            <div>
+                <table class="table bordered">
+                    <thead class="font-weight-bold text-primary text-center">
+                    <tr style="font-size: 1.2rem;">
+                        <td>아이디</td>
+                        <td>닉네임</td>
+                        <td>가입일</td>
+                        <td>상태</td>
+                        <td>강퇴</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        {% if user.grade|int < 99 %}
+                            <tr class="text-center">
+                                <td style="vertical-align: middle">{{ user.user_id }}</td>
+                                <td style="vertical-align: middle">{{ user.nick_name }}</td>
+                                <td style="vertical-align: middle">{{ user.join_date }}</td>
+                                <td style="vertical-align: middle">
+                                    {% if user.grade|int == 0 %}
+                                        <b>활성화</b>
+                                        <button type="button" class="btn btn-outline-danger p-1" onclick="activeUser('{{ user._id }}')">
+                                            <i class="fa fa-minus-circle"></i> 비활성화 하기
+                                        </button>
+                                    {% elif user.grade == -1 %}
+                                        <b>비활성화</b>
+                                        <button type="button" class="btn btn-outline-success p-1" onclick="activeUser('{{ user._id }}')">
+                                            <i class="fa fa-plus-circle"></i> 활성화 하기
+                                        </button>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-secondary p-1"
+                                            onclick="delUser('{{ user._id }}')">
+                                        <i class="fa fa-trash"></i> 강퇴하기
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+
+    <div class="text-center">
+        <h2 class="text-warning pt-4 my-4">
+            관리자 외 접근이 불가한 페이지 입니다.
+        </h2>
+        <button type="button" class="btn btn-primary my-3" onclick="location.href='/'">돌아가기</button>
+    </div>
+
+{% endif %}
+
+<script>
+    function logout() {
+        $.removeCookie('mytoken', {path: '/'});
+        alert('로그아웃되었습니다.');
+        window.location.href = "/"
+    }
+
+    {# 강퇴 #}
+
+    function delUser(_userIdx) {
+        {#alert(_contentId);#}
+        if (confirm("강퇴한 회원의 정보는 복구가 불가능합니다. 강퇴하시겠습니까?")) {
+            $.ajax({
+                type: 'GET',
+                url: `/delUser/${_userIdx}`,
+                data: {
+                    userIdx: _userIdx
+                },
+                success: function (response) {
+                    console.log(response['msg']);
+                    alert('회원정보가 삭제되었습니다.');
+                    location.reload();
+                }
+            })
+        } else {
+            return false;
+        }
+
+    }
+
+    function activeUser(_userIdx) {
+        $.ajax({
+            type: 'GET',
+            url: `/updateUser/${_userIdx}`,
+            data: {
+                userIdx: _userIdx
+            },
+           success: function (response) {
+                {#console.log(response['msg']);#}
+                alert('회원정보 수정이 완료되었습니다.');
+                location.reload();
+            }
+        })
+    }
+</script>
+
+</body>
+
+</html>

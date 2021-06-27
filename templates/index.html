@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>S.G.S.K.</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    * {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .match-wrapper {
+        border-radius: .75rem;
+        min-height: 3rem;
+        background: #fff;
+    }
+
+    img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    table tbody tr td {
+        padding: .25rem !important;
+    }
+
+    .accordion-button::after {
+        color: #fff !important;
+    }
+
+</style>
+
+<body>
+<nav>
+    <div class="d-flex justify-content-between align-items-center bg-dark px-3" style="height: 3rem;">
+        <button class="btn btn-dark p-0" style="border: none!important;" type="button" onclick="location.href='/';"
+                data-toggle="tooltip" data-placement="bottom"
+                title="S.G.S.K.( Soccer God Soccer King의 약자) - 대충 축신축왕이라는 뜻">
+            ⚽ S.G.S.K
+        </button>
+        <div>
+            {# 마이페이지 보류 #}
+            {# <button type="button" class="btn btn-outline-dark text-white" onclick="location.href='/mypage/{{ user_info._id }}'">#}
+            {# <i class="fa fa-user-circle"></i>#}
+            {# </button>#}
+            {% if user_info.grade == 99 %}
+                <button class="btn btn-dark" type="button" onclick="location.href='/admin/schedule'">
+                    <i class="fa fa-cog"></i>
+                </button>
+            {% endif %}
+            {% if user_info %}
+                <button type="button" class="btn btn-outline-dark text-white" onclick="logout()">
+                    <i class="fa fa-unlock"></i>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div style="background: #f3f3f3; height: calc(100vh - 3rem);">
+    <div class="col-lg-7 mx-auto px-3" style="height: calc(100vh - 3rem); overflow: auto; background: #f3f3f3;">
+        <div class="bg-white d-flex mt-1">
+            <button class="btn btn-primary w-50">
+                국내축구
+            </button>
+            <button class="btn btn-outline-primary w-50" onclick="alert('다음시즌에 만나요!');">
+                해외축구
+            </button>
+        </div>
+        <div class="accordion mt-3 px-2" id="accordionExample" style="border-radius: .75rem;">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        K-LEAGUE 1 순위
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body pt-1">
+                        <div class="w-100 bg-white mt-4" style="border-radius: .75rem; height: 450px;">
+                            <table class="p-1 m-1 table w-100 mx-auto">
+                                <thead class="text-center text-primary">
+                                <tr>
+                                    <td>순위</td>
+                                    <td>팀</td>
+                                    <td>경기수</td>
+                                    <td>승점</td>
+                                    <td>승</td>
+                                    <td>무</td>
+                                    <td>패</td>
+                                    <td>득점</td>
+                                    <td>실점</td>
+                                    <td>득실차</td>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center text-secondary">
+                                <tr>
+                                    <td>1</td>
+                                    <td>울산</td>
+                                    <td>18</td>
+                                    <td>36</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>전북</td>
+                                    <td>18</td>
+                                    <td>33</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>울산</td>
+                                    <td>18</td>
+                                    <td>36</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>전북</td>
+                                    <td>18</td>
+                                    <td>33</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>울산</td>
+                                    <td>18</td>
+                                    <td>36</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>전북</td>
+                                    <td>18</td>
+                                    <td>33</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>울산</td>
+                                    <td>18</td>
+                                    <td>36</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>전북</td>
+                                    <td>18</td>
+                                    <td>33</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>울산</td>
+                                    <td>18</td>
+                                    <td>36</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>전북</td>
+                                    <td>18</td>
+                                    <td>33</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>울산</td>
+                                    <td>18</td>
+                                    <td>36</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>전북</td>
+                                    <td>18</td>
+                                    <td>33</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>28</td>
+                                    <td>15</td>
+                                    <td>13</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-3" id="month-btns" class="w-100" style="display: flex; justify-content: center;">
+            <button type="button" id="monthAll" class="btn btn-outline-primary mx-1" onclick="divMatchMonth('all')">전체
+            </button>
+            <button type="button" id="month6" class="btn btn-outline-primary mx-1" onclick="divMatchMonth(6)">6월
+            </button>
+            <button type="button" id="month7" class="btn btn-outline-primary mx-1" onclick="divMatchMonth(7)">7월
+            </button>
+            <button type="button" id="month8" class="btn btn-outline-primary mx-1" onclick="divMatchMonth(8)">8월
+            </button>
+            <button type="button" id="month9" class="btn btn-outline-primary mx-1" onclick="divMatchMonth(9)">9월
+            </button>
+            <button type="button" id="month10" class="btn btn-outline-primary mx-1" onclick="divMatchMonth(10)">10월
+            </button>
+        </div>
+        {% if month %}
+            <h4 class="pt-3 text-center">{{ month }} 월 경기일정입니다.</h4>
+        {% else %}
+            <h4 class="pt-3 text-center">전체 경기일정입니다.</h4>
+        {% endif %}
+
+        <div class="row pt-1">
+
+            <!--  -->
+            {% for match in matches %}
+                {# <h1>month : {{ month }}</h1> #}
+                {% if month %}
+                    {% if match.match_day[6: 7]|int < 10 %}
+                        {% if month|int == match.match_day[6: 7]|int %}
+                            <div class="col-md-6 mb-2">
+
+                                <div class="match-wrapper p-2 py-3 my-2">
+                                    {% if user_info.grade == 99 %}
+                                        <button class="btn btn-secondary" style="border-radius: 50%; float: right;"
+                                                onclick="delMatch( '{{ match._id }}' )">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    {% endif %}
+                                    <br>
+                                    <div class="d-flex"
+                                         style="justify-content: space-evenly; font-size: 2rem !important;">
+                                        <div class="font-weight-bold">
+                                            <img src="/static/{{ match.home_team }}.png" alt="home">
+                                            <div class="text-center">
+                                                {{ match.home_team }}
+                                            </div>
+                                        </div>
+                                        <div class="mt-4"> vs</div>
+                                        <div class="font-weight-bold">
+                                            <img src="/static/{{ match.away_team }}.png" alt="away">
+                                            <div class="text-center">
+                                                {{ match.away_team }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center text-secondary">
+                                        {{ match.match_day }}
+                                        <input type="hidden" id="matchMonth" value="{{ match.match_day }}">
+                                    </div>
+                                    <div class="text-center text-secondary">
+                                        {{ match.stadium }}
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-primary p-1 m-2 w-75 mx-auto"
+                                                onclick="location.href='/cheer/{{ match['_id'] }}'">
+                                            응원하기
+                                            {# {{ match.match_idx }} / {{ match['_id'] }} #}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <div class="col-md-6 mb-2">
+
+                        <div class="match-wrapper p-2 py-3 my-2">
+                            {% if user_info.grade == 99 %}
+                                <button class="btn btn-secondary" style="border-radius: 50%; float: right;"
+                                        onclick="delMatch( '{{ match._id }}' )">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            {% endif %}
+                            <br>
+                            <div class="d-flex"
+                                 style="justify-content: space-evenly; font-size: 2rem !important;">
+                                <div class="font-weight-bold">
+                                    <img src="/static/{{ match.home_team }}.png" alt="home">
+                                    <div class="text-center">
+                                        {{ match.home_team }}
+                                    </div>
+                                </div>
+                                <div class="mt-4"> vs</div>
+                                <div class="font-weight-bold">
+                                    <img src="/static/{{ match.away_team }}.png" alt="away">
+                                    <div class="text-center">
+                                        {{ match.away_team }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center text-secondary">
+                                {{ match.match_day }}
+                                <input type="hidden" id="matchMonth" value="{{ match.match_day }}">
+                            </div>
+                            <div class="text-center text-secondary">
+                                {{ match.stadium }}
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary p-1 m-2 w-75 mx-auto"
+                                        onclick="location.href='/cheer/{{ match['_id'] }}'">
+                                    응원하기
+                                    {# {{ match.match_idx }} / {{ match['_id'] }} #}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+                <!--  -->
+            {% endfor %}
+
+        </div>
+        <script>
+
+            function signUp() {
+                location.href = '/signUp';
+            }
+
+            function logout() {
+                $.removeCookie('mytoken', {path: '/'});
+                alert('로그아웃되었습니다.');
+                window.location.href = "/"
+            }
+
+            function delMatch(_matchId) {
+                if (confirm("삭제한 경기의 정보는 복구가 불가능합니다. 삭제하시겠습니까?")) {
+                    $.ajax({
+                        type: 'GET',
+                        url: `/delMatch/${_matchId}`,
+                        data: {
+                            matchId: _matchId
+                        },
+                        success: function (response) {
+                            console.log(response['msg']);
+                            location.reload();
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            }
+
+            function divMatchMonth(_month) {
+                if (_month == "all") {
+                    location.href = `/`;
+                } else {
+                    location.href = `/${_month}`;
+                }
+            }
+
+            $(document).ready(function () {
+                {% if month %}
+                    for (let i = 6; i < 11; i++) {
+                        if (i == {{ month|int }}) {
+                            $("#month" + i).removeClass("btn btn-outline-primary").addClass('btn btn-primary');
+                        }
+                    }
+                {% else %}
+                    $("#monthAll").removeClass("btn btn-outline-primary").addClass('btn btn-primary');
+                {% endif %}
+            })
+
+        </script>
+    </div>
+</div>
+
+</body>
+
+</html>

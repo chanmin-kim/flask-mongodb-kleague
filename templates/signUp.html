@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>S.G.S.K.</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    * {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .match-wrapper {
+        border-radius: .75rem;
+        min-height: 3rem;
+        background: #f3f3f3;
+        background: #fff;
+    }
+
+    img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    table tbody tr td {
+        padding: .25rem !important;
+    }
+
+    .accordion-button::after {
+        color: #fff !important;
+    }
+</style>
+
+<body>
+<nav>
+    <div class="d-flex justify-content-between align-items-center bg-dark px-3" style="min-height: 3rem;">
+        <button class="btn btn-dark p-0" style="border: none!important;" type="button" onclick="location.href='/';"
+                data-toggle="tooltip" data-placement="bottom"
+                title="S.G.S.K.( Soccer God Soccer King의 약자) - 대충 축신축왕이라는 뜻">
+            ⚽ S.G.S.K
+        </button>
+    </div>
+</nav>
+
+<div style="background: #f3f3f3; height: calc(100vh - 3rem);">
+    <div class="col-lg-6 mx-auto px-5 bg-white"
+         style="height: calc(100vh - 3rem); overflow: auto; background: #f3f3f3;">
+        <div>
+            <h3 class="text-center py-5">회원가입</h3>
+            <label for="usrId">아이디</label>
+            <div class="d-flex w-100">
+                <input class="form-control w-75" type="text" id="userId" autocomplete="off"
+                       placeholder="아이디는 2-10자의 영문, 숫자 조합으로 입력해주세요.">
+                <button class="btn btn-outline-success w-25 help-id" id="chkId" onclick="chkDup()">중복체크</button>
+            </div>
+            <br>
+            <label for="nickName">닉네임</label>
+            <input class="form-control" type="text" id="nickName" autocomplete="off">
+            <br>
+            <label for="userPw">비밀번호</label>
+            <input class="form-control mb-2" type="password" id="userPw"
+                   placeholder="영문, 숫자의 조합을 입력해주세요(일부 특수문자(!@#$%^&*) 포함 가능)">
+            <label for="userPw2">비밀번호 확인</label>
+            <input class="form-control mb-1" type="password" id="userPw2">
+            <br>
+            <button type="button" class="btn btn-success w-100" onclick="signUp()">⚽회원가입</button>
+            <br><br>
+            <label for="login">이미 계정이 있으신가요?</label>
+            <button type="button" class="btn btn-outline-success w-100" onclick="location.href='/signin';">로그인</button>
+        </div>
+    </div>
+</div>
+<script>
+    function is_id(asValue) {
+        {#var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;#}
+        var regExp = /^[a-z]+[a-z0-9]{5,19}$/g;
+        return regExp.test(asValue);
+    }
+
+    function is_password(asValue) {
+        var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+        return regExp.test(asValue);
+    }
+
+    function chkDup() {
+        let userId = $("#userId").val();
+
+        if (userId == "") {
+            alert("아이디를 입력해주세요.");
+            return;
+        }
+        if (!is_id(userId)) {
+            $("#help-id").text("유효한 형식이 아닙니다. (영문, 숫자, 특수문자(._-)가 포함된 2-10자 길이). ").removeClass("text-success").addClass("text-danger")
+            alert("유효한 형식이 아닙니다. (영문, 숫자, 특수문자(._-)가 포함된 2-10자 길이로 작성해주세요.)")
+            $("#userId").focus()
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/sign_up/check_dup",
+            data: {
+                userId: userId
+            },
+            success: function (response) {
+                if (response["exists"]) {
+                    alert("이미 존재하는 아이디입니다.");
+                    $("#userId").focus()
+                } else {
+                    alert("사용 가능한 아이디입니다.");
+                    $("#chkId").removeClass("btn-outline-success").addClass("btn-success");
+                    $("#chkId").empty().text("중복체크완료");
+                }
+            }
+        });
+    }
+
+    function signUp() {
+        let userId = $("#userId").val();
+        let userPw = $("#userPw").val();
+        let userPw2 = $("#userPw2").val();
+        let nickName = $("#nickName").val();
+
+        if (userId == "") {
+            alert("아이디를 입력하세요.");
+            return;
+        } else if ($("#idChk").hasClass("btn-outline-primary")) {
+            alert("아이디 중복확인을 해주세요.");
+            return;
+        }
+        if (nickName == "") {
+            alert("닉네임을 입력해주세요");
+        }
+        if (userPw == "") {
+            alert('비밀번호를 입력해주세요.');
+            $("#userPw").focus()
+            return;
+        } else if (!is_password(userPw)) {
+            alert('유효하지 않은 양식입니다. (영문과 숫자 필수 포함, 특수문자(!@#$%^&*) 사용가능 8-20자)')
+            $("#input-password").focus()
+            return
+        }
+
+        if (userPw == "") {
+            alert("비밀번호를 입력해주세요.");
+            $("#userPw").focus()
+            return;
+        } else if (userPw != userPw2) {
+            alert("비밀번호가 일치하지않습니다.");
+            $("#input-password2").focus()
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/sign_up/save",
+            data: {
+                userId: userId,
+                nickName: nickName,
+                userPw: userPw
+            },
+            success: function (response) {
+                alert("회원가입을 축하드립니다!!")
+                window.location.replace("/");
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

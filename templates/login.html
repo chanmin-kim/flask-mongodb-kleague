@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>S.G.S.K.</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    * {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .match-wrapper {
+        border-radius: .75rem;
+        min-height: 3rem;
+    {#background: #f3f3f3;#} background: #fff;
+    }
+
+    img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    table tbody tr td {
+        padding: .25rem !important;
+    }
+
+    .accordion-button::after {
+        color: #fff !important;
+    }
+</style>
+
+<body>
+<nav>
+    <div class="d-flex justify-content-between align-items-center bg-dark px-3" style="min-height: 3rem;">
+        <button class="btn btn-dark p-0" style="border: none!important;" type="button" onclick="location.href='/';"
+                data-toggle="tooltip" data-placement="bottom"
+                title="S.G.S.K.( Soccer God Soccer King의 약자) - 대충 축신축왕이라는 뜻">
+            ⚽ S.G.S.K
+        </button>
+    </div>
+</nav>
+
+<div style="background: #f3f3f3; height: calc(100vh - 3rem);">
+    <div class="col-lg-6 mx-auto px-5 bg-white"
+         style="height: calc(100vh - 3rem); overflow: auto; background: #f3f3f3;">
+        <div>
+            <h3 class="text-center py-5">로그인</h3>
+            <label for="usrId">아이디</label>
+            <input class="form-control" type="text" id="userId" autocomplete="off">
+            <br>
+            <label for="userPw">비밀번호</label>
+            <input class="form-control mb-1" type="password" id="userPw">
+            <br>
+            <button type="button" class="btn btn-success w-100" onclick="signIn()">⚽로그인</button>
+            <br>
+            <br>
+            <h5 class="text-center text-primary">아직 회원이 아니신가요?</h5>
+            <button type="button" class="btn btn-outline-success w-100" onclick="signUp()">
+                회원가입하기
+            </button>
+
+        </div>
+    </div>
+</div>
+<script>
+    function signIn() {
+        let userId = $("#userId").val()
+        let userPw = $("#userPw").val()
+
+        if (userId == "") {
+            alert("아이디를 입력해주세요");
+            $("#input-username").focus()
+            return;
+        }
+
+        if (userPw == "") {
+            alert("비밀번호를 입력해주세요.");
+            $("#input-password").focus()
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/api/sign_in",
+            data: {
+                userId: userId,
+                userPw: userPw
+            },
+            success: function (response) {
+                if (response['result'] == 'success') {
+                    $.cookie('mytoken', response['token'], {path: '/'});
+                    window.location.replace("/")
+                } else {
+                    alert(response['msg'])
+                }
+            }
+        });
+    }
+
+    function signUp() {
+        location.href = "/signUp";
+    }
+</script>
+</body>
+
+</html>

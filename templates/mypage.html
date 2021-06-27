@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>S.G.S.K.</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    * {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .match-wrapper {
+        border-radius: .75rem;
+        min-height: 3rem;
+        background: #fff;
+    }
+
+    img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    table tbody tr td {
+        padding: .25rem !important;
+    }
+
+    .accordion-button::after {
+        color: #fff !important;
+    }
+
+</style>
+
+<body>
+<nav>
+    <div class="d-flex justify-content-between align-items-center bg-dark px-3" style="height: 3rem;">
+        <button class="btn btn-dark p-0" style="border: none!important;" type="button" onclick="location.href='/';"
+                data-toggle="tooltip" data-placement="bottom"
+                title="S.G.S.K.( Soccer God Soccer King의 약자) - 대충 축신축왕이라는 뜻">
+            ⚽ S.G.S.K
+        </button>
+        <div>
+            <button type="button" class="btn btn-outline-dark text-white"
+                    onclick="location.href='/mypage/{{ user_info._id }}'">
+                <i class="fa fa-user-circle"></i>
+            </button>
+            {% if user_info.grade == 99 %}
+                <button class="btn btn-dark" type="button" onclick="location.href='/admin/schedule'">
+                    <i class="fa fa-cog"></i>
+                </button>
+            {% endif %}
+            {% if user_info %}
+                <button type="button" class="btn btn-outline-dark text-white" onclick="logout()">
+                    <i class="fa fa-unlock"></i>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div style="background: #f3f3f3; height: calc(100vh - 3rem);">
+    <div class="col-lg-7 mx-auto px-3" style="height: calc(100vh - 3rem); overflow: auto; background: #f3f3f3;">
+
+        <div class="row pt-1">
+            <br>
+            <h3 class="text-primary my-4">
+                회원정보 수정
+            </h3>
+            <div>
+                <input class="form-control" type="text" id="userId">
+            </div>
+            <br><br>
+            <h3 class="my-4 text-primary">내가 쓴 글</h3>
+            <div class="bg-white p-3">
+                <table class="table table-bordered">
+                    <thead class="text-center font-weight-bold" style="font-size: 1.2rem;">
+                    <tr>
+                        <td>작성일</td>
+                        <td>내용</td>
+                        <td>삭제</td>
+                        <td>원본링크</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for content in contents %}
+                        <tr>
+                            <td>
+                                {{ content.cheer_datetime }}
+                            </td>
+                            <td>
+                                {{ content.cheer_content }}
+                            </td>
+                            <td>
+                                <button class="btn btn-inverse-secondary" onclick="delContent({{ content._id }})">
+                                    <i class="fa fa-trash"></i> 삭제
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary"
+                                        onclick="location.href='/cheer/{{ content._id }}'">
+                                    <i class="fa fa-file-text"></i> 원본링크
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+
+            function logout() {
+                $.removeCookie('mytoken', {path: '/'});
+                alert('로그아웃되었습니다.');
+                window.location.href = "/"
+            }
+
+        </script>
+    </div>
+</div>
+
+</body>
+
+</html>
