@@ -37,3 +37,6 @@
 ### 시현영상
 #### https://www.youtube.com/watch?v=31wHSxW054Q
 
+### 코드리뷰
+#### https://freedman.tistory.com/category/Projects/Flask%20%2B%20MongoDB%20K%EB%A6%AC%EA%B7%B8%20%EC%9D%BC%EC%A0%95%EC%84%9C%EB%B9%84%EC%8A%A4
+
